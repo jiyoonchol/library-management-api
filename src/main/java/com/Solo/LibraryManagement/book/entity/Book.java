@@ -41,4 +41,10 @@ public class Book {
     @JoinColumn(name = "library_id")
     private Library library;
 
+    public Book(Long bookId, String bookName, String author, String publisher) {
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.author = author;
+        this.publisher = publisher;
+    }
 }

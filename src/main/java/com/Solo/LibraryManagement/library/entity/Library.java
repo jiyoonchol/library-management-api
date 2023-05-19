@@ -33,4 +33,10 @@ public class Library {
 
     @OneToMany(mappedBy = "library")
     private List<Book> books = new ArrayList<>();
+
+    public Library(Long libraryId, String libraryName, String libraryAddress) {
+        this.libraryId = libraryId;
+        this.libraryName = libraryName;
+        this.libraryAddress = libraryAddress;
+    }
 }
