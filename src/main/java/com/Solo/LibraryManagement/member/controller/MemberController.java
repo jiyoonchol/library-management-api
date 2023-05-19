@@ -6,11 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/mc/member")
 public class MemberController {
     @PostMapping
-    public ResponseEntity postMember(@RequestBody MemberPostDto memberPostDto) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
         return new ResponseEntity<>(memberPostDto, HttpStatus.CREATED);
     }
 

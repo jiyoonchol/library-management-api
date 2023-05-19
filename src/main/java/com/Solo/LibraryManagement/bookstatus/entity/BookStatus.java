@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class BookStatus {
@@ -21,11 +20,15 @@ public class BookStatus {
 
     @Column
     private boolean isAvailable;
-    @Column
-    private boolean isUnAvailable;
+
 
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
+    public BookStatus(Long bookStatusId, boolean isAvailable) {
+        this.bookStatusId = bookStatusId;
+        this.isAvailable = isAvailable;
+
+    }
 }

@@ -38,6 +38,9 @@ dependencies {
 	// Lombok(DEVELOPER TOOLS)
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+    // Lombok test 환경
+	testImplementation('org.projectlombok:lombok')
+	testAnnotationProcessor('org.projectlombok:lombok')
 	// MySQL Driver(SQL)
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	// H2 Driver
