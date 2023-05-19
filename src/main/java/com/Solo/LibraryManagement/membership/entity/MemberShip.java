@@ -32,4 +32,10 @@ public class MemberShip {
     @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
+
+    public MemberShip(Long memberShipId, boolean isActive, boolean isOverDue) {
+        this.memberShipId = memberShipId;
+        this.isActive = isActive;
+        this.isOverDue = isOverDue;
+    }
 }

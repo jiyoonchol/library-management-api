@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/lc/library")
 public class LibraryController {
@@ -33,24 +35,37 @@ public class LibraryController {
     public ResponseEntity patchLibrary(@PathVariable("/library-id") long libraryId,
                                        @RequestBody LibraryPatchDto libraryPatchDto) {
         libraryPatchDto.setLibraryId(libraryId);
-        libraryPatchDto.setLibraryAddress("LibraryAddress");
+        Library library = new Library();
+        library.setLibraryName(libraryPatchDto.getLibraryName());
+        library.setLibraryAddress(libraryPatchDto.getLibraryAddress());
+
+        Library response = libraryService.updateLibrary(library);
         return new ResponseEntity<>(libraryPatchDto, HttpStatus.OK);
     }
 
     @GetMapping("/{library-id}")
     public ResponseEntity getLibrary(@PathVariable("library-id") long libraryId) {
         System.out.println("# libraryId: " + libraryId);
-        return new ResponseEntity(libraryId, HttpStatus.OK);
+
+        Library response = libraryService.findLibrary(libraryId);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getLibraries() {
         System.out.println("# get Libraries");
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        List<Library> response = libraryService.findLibraries();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{library-id}")
     public ResponseEntity deleteLibrary(@PathVariable("library-id") long libraryId) {
+
+        System.out.println("# delete book");
+
+        libraryService.deleteLibrary(libraryId);
+
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

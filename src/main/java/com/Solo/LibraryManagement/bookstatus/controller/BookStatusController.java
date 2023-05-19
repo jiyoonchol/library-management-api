@@ -46,14 +46,14 @@ public class BookStatusController {
         System.out.println("# bookStatusId: " + bookStatusId);
 
         BookStatus response = bookStatusService.findBookStatus(bookStatusId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping
     private ResponseEntity getBookListStatus() {
        List<BookStatus> response = bookStatusService.findBookListStatus();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookStatus-id}")
