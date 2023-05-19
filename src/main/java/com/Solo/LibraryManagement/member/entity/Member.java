@@ -34,4 +34,11 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<MemberShip> memberShips = new ArrayList<>();
+
+    public Member(Long memberId, String memberName, String phoneNumber, String memberAddress) {
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.phoneNumber = phoneNumber;
+        this.memberAddress = memberAddress;
+    }
 }

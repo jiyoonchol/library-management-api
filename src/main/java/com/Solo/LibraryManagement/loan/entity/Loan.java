@@ -39,4 +39,11 @@ public class Loan {
     @OneToOne
     @JoinColumn(name = "bookstatus_id")
     private BookStatus bookStatus;
+
+    public Loan(Long loanId, boolean isOverdue, boolean isReturned, String dueDate) {
+        this.loanId = loanId;
+        this.isOverdue = isOverdue;
+        this.isReturned = isReturned;
+        this.dueDate = dueDate;
+    }
 }
