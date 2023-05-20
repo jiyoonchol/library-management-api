@@ -2,65 +2,72 @@ package com.Solo.LibraryManagement.library.controller;
 
 import com.Solo.LibraryManagement.library.dto.LibraryPatchDto;
 import com.Solo.LibraryManagement.library.dto.LibraryPostDto;
+import com.Solo.LibraryManagement.library.dto.LibraryResponseDto;
 import com.Solo.LibraryManagement.library.entity.Library;
+import com.Solo.LibraryManagement.library.mapper.LibraryMapper;
 import com.Solo.LibraryManagement.library.service.LibraryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/lc/library")
 public class LibraryController {
 
     private final LibraryService libraryService;
+    private final LibraryMapper libraryMapper;
 
-    public LibraryController(LibraryService libraryService) {
+    public LibraryController(LibraryService libraryService, LibraryMapper libraryMapper) {
         this.libraryService = libraryService;
+        this.libraryMapper = libraryMapper;
     }
 
     @PostMapping
     public ResponseEntity postLibrary(@RequestBody LibraryPostDto libraryPostDto) {
-        Library library = new Library();
+        Library library = libraryMapper.libraryToLibraryPostDto(libraryPostDto);
 
-        library.setLibraryName(library.getLibraryName());
-        library.setLibraryAddress(library.getLibraryAddress());
+
 
         Library response = libraryService.createLibrary(library);
-        return new ResponseEntity<>(libraryPostDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(libraryMapper.libraryToLibraryResponseDto(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{library-id}")
-    public ResponseEntity patchLibrary(@PathVariable("/library-id") long libraryId,
+    public ResponseEntity patchLibrary(@PathVariable("/library-id") @Positive long libraryId,
                                        @RequestBody LibraryPatchDto libraryPatchDto) {
         libraryPatchDto.setLibraryId(libraryId);
-        Library library = new Library();
-        library.setLibraryName(libraryPatchDto.getLibraryName());
-        library.setLibraryAddress(libraryPatchDto.getLibraryAddress());
 
-        Library response = libraryService.updateLibrary(library);
-        return new ResponseEntity<>(libraryPatchDto, HttpStatus.OK);
+
+
+        Library response = libraryService.updateLibrary(libraryMapper.libraryToLibraryPatchDto(libraryPatchDto));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{library-id}")
-    public ResponseEntity getLibrary(@PathVariable("library-id") long libraryId) {
-        System.out.println("# libraryId: " + libraryId);
+    public ResponseEntity getLibrary(@PathVariable("library-id") @Positive long libraryId) {
+
 
         Library response = libraryService.findLibrary(libraryId);
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity(libraryMapper.libraryToLibraryResponseDto(response), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getLibraries() {
-        System.out.println("# get Libraries");
 
-        List<Library> response = libraryService.findLibraries();
+        List<Library> libraries = libraryService.findLibraries();
+        List<LibraryResponseDto> response =
+                libraries.stream()
+                        .map(library -> libraryMapper.libraryToLibraryResponseDto(library))
+                        .collect(Collectors.toList());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{library-id}")
-    public ResponseEntity deleteLibrary(@PathVariable("library-id") long libraryId) {
+    public ResponseEntity deleteLibrary(@PathVariable("library-id") @Positive long libraryId) {
 
         System.out.println("# delete book");
 

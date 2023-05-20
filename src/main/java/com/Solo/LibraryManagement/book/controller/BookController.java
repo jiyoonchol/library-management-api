@@ -2,7 +2,9 @@ package com.Solo.LibraryManagement.book.controller;
 
 import com.Solo.LibraryManagement.book.dto.BookPatchDto;
 import com.Solo.LibraryManagement.book.dto.BookPostDto;
+import com.Solo.LibraryManagement.book.dto.BookResponseDto;
 import com.Solo.LibraryManagement.book.entity.Book;
+import com.Solo.LibraryManagement.book.mapper.BookMapper;
 import com.Solo.LibraryManagement.book.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,52 +12,50 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/b1/books")
 public class BookController {
     private final BookService bookService;
+    private final BookMapper bookMapper;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookMapper bookMapper) {
         this.bookService = bookService;
+        this.bookMapper = bookMapper;
     }
 
     @PostMapping
     public ResponseEntity postBook(@RequestBody BookPostDto bookPostDto) {
-        Book book = new Book();
-        book.setBookName(bookPostDto.getBookName());
-        book.setAuthor(bookPostDto.getAuthor());
-        book.setPublisher(bookPostDto.getPublisher());
-
+        Book book = bookMapper.bookPostDtoToBook(bookPostDto);
         Book response = bookService.createBook(book);
-        return new ResponseEntity<>(bookPostDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(bookMapper.bookToBookResponseDto(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{book-id}")
-    public ResponseEntity patchBook(@PathVariable("book-id") long bookId,
+    public ResponseEntity patchBook(@PathVariable("book-id") @Positive long bookId,
                                     @RequestBody BookPatchDto bookPatchDto) {
         bookPatchDto.setBookId(bookId);
-        Book book = new Book();
-        book.setBookId(bookPatchDto.getBookId());
-        book.setBookName(bookPatchDto.getBookName());
-        book.setAuthor(book.getAuthor());
-        book.setPublisher(book.getPublisher());
 
-        Book response = bookService.updateBook(book);
-        return new ResponseEntity<>(bookPatchDto, HttpStatus.OK);
+
+        Book response = bookService.updateBook(bookMapper.bookPatchDtoToBook(bookPatchDto));
+        return new ResponseEntity<>(bookMapper.bookToBookResponseDto(response), HttpStatus.OK);
     }
 
     @GetMapping("/{book-id}")
-    public ResponseEntity getBook(@PathVariable("book-id") long bookId) {
-        System.out.println("# bookId: " + bookId);
+    public ResponseEntity getBook(@PathVariable("book-id") @Positive long bookId) {
 
         Book response = bookService.findBook(bookId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(bookMapper.bookToBookResponseDto(response), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getBooks() {
-        List<Book> response = bookService.findBooks();
+        List<Book> books = bookService.findBooks();
+        List<BookResponseDto> response =
+                books.stream()
+                        .map(book -> bookMapper.bookToBookResponseDto(book))
+                        .collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
