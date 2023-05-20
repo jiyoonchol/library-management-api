@@ -1,6 +1,7 @@
 package com.Solo.LibraryManagement.domain.bookstatus.entity;
 
 import com.Solo.LibraryManagement.domain.book.entity.Book;
+import com.Solo.LibraryManagement.global.audit.BaseTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class BookStatus {
+public class BookStatus extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

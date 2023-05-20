@@ -3,6 +3,7 @@ package com.Solo.LibraryManagement.domain.loan.entity;
 import com.Solo.LibraryManagement.domain.book.entity.Book;
 import com.Solo.LibraryManagement.domain.bookstatus.entity.BookStatus;
 import com.Solo.LibraryManagement.domain.member.entity.Member;
+import com.Solo.LibraryManagement.global.audit.BaseTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Loan {
+public class Loan extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,7 @@ public class Loan {
     private boolean isReturned;
     @Column
     private String dueDate;
+    // ㄷ ㅐ출 시작일, 반납 시간
 
     @ManyToOne
     @JoinColumn(name = "member_id")

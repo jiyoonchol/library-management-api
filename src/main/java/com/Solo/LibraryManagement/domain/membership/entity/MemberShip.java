@@ -2,6 +2,7 @@ package com.Solo.LibraryManagement.domain.membership.entity;
 
 import com.Solo.LibraryManagement.domain.library.entity.Library;
 import com.Solo.LibraryManagement.domain.member.entity.Member;
+import com.Solo.LibraryManagement.global.audit.BaseTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class MemberShip {
+public class MemberShip extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,8 @@ public class MemberShip {
     private boolean isActive;
     @Column
     private boolean isOverDue;
+
+    // 가입 날짜
 
     @ManyToOne
     @JoinColumn(name = "member_id")

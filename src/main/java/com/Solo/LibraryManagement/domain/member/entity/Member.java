@@ -2,6 +2,7 @@ package com.Solo.LibraryManagement.domain.member.entity;
 
 import com.Solo.LibraryManagement.domain.loan.entity.Loan;
 import com.Solo.LibraryManagement.domain.membership.entity.MemberShip;
+import com.Solo.LibraryManagement.global.audit.BaseTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Member extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

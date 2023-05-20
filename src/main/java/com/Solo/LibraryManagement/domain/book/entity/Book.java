@@ -3,6 +3,7 @@ package com.Solo.LibraryManagement.domain.book.entity;
 import com.Solo.LibraryManagement.domain.bookstatus.entity.BookStatus;
 import com.Solo.LibraryManagement.domain.library.entity.Library;
 import com.Solo.LibraryManagement.domain.loan.entity.Loan;
+import com.Solo.LibraryManagement.global.audit.BaseTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Book {
+public class Book extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
