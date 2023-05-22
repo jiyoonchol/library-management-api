@@ -1,9 +1,7 @@
 package com.Solo.LibraryManagement.global.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
-
 import javax.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Set;
