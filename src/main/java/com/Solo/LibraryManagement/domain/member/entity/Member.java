@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Member extends BaseTime {
@@ -23,12 +23,18 @@ public class Member extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Column(nullable = false, updatable = false, unique = true)
+    private String email;
     @Column
-    private String memberName;
+    private String name;
     @Column
     private String phoneNumber;
     @Column
-    private String memberAddress;
+    private String address;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     @OneToMany(mappedBy = "member")
     private List<Loan> loans = new ArrayList<>();
@@ -36,10 +42,24 @@ public class Member extends BaseTime {
     @OneToMany(mappedBy = "member")
     private List<MemberShip> memberShips = new ArrayList<>();
 
-    public Member(Long memberId, String memberName, String phoneNumber, String memberAddress) {
+    public Member(Long memberId, String email, String name, String phoneNumber, String address) {
         this.memberId = memberId;
-        this.memberName = memberName;
+        this.email = email;
+        this.name = name;
         this.phoneNumber = phoneNumber;
-        this.memberAddress = memberAddress;
+        this.address = address;
+    }
+
+    public enum MemberStatus {
+        MEMBER_ACTIVE("활동중"),
+        MEMBER_SLEEP("휴면 상태"),
+        MEMBER_QUIT("탈퇴 상태");
+
+        @Getter
+        private String status;
+
+        MemberStatus(String status) {
+            this.status = status;
+        }
     }
 }

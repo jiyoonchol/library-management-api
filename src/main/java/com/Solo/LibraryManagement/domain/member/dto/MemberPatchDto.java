@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class MemberPatchDto {
     private long memberId;
-    private String memberName;
+    private String name;
     private String phoneNumber;
-    private String memberAddress;
+    private String address;
 }
