@@ -26,7 +26,7 @@ public class Book extends BaseTime {
     private Long bookId;  // PK 도서 식별번호
 
     @Column(name = "BOOK_NAME", nullable = false)
-    private String bookName;
+    private String title;
     @Column(nullable = false)
     private String author;
     @Column(nullable = false)
@@ -42,9 +42,9 @@ public class Book extends BaseTime {
     @JoinColumn(name = "library_id")
     private Library library;
 
-    public Book(Long bookId, String bookName, String author, String publisher) {
+    public Book(Long bookId, String title, String author, String publisher) {
         this.bookId = bookId;
-        this.bookName = bookName;
+        this.title = title;
         this.author = author;
         this.publisher = publisher;
     }

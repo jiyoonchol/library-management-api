@@ -31,4 +31,6 @@ public class BookStatus extends BaseTime {
         this.isAvailable = isAvailable;
 
     }
+
+
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class BookPatchDto {
     private long bookId;
-    private String bookName;
+    private String title;
     private String author;
     private String publisher;
 
