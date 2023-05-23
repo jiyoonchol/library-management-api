@@ -6,6 +6,8 @@ import com.Solo.LibraryManagement.domain.book.dto.BookResponseDto;
 import com.Solo.LibraryManagement.domain.book.entity.Book;
 import com.Solo.LibraryManagement.domain.book.mapper.BookMapper;
 import com.Solo.LibraryManagement.domain.book.service.BookService;
+import com.Solo.LibraryManagement.global.response.PageResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,14 +52,14 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity getBooks() {
-        List<Book> books = bookService.findBooks();
-        List<BookResponseDto> response =
-                books.stream()
-                        .map(book -> bookMapper.bookToBookResponseDto(book))
-                        .collect(Collectors.toList());
+    public ResponseEntity getBooks(@Positive @RequestParam int page,
+                                   @Positive @RequestParam int size) {
+        Page<Book> pageBooks = bookService.findBooks(page - 1, size);
+        List<Book> books = pageBooks.getContent();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        return new ResponseEntity<>(
+                new PageResponseDto<>(bookMapper.booksToBookResponseDtos(books), pageBooks), HttpStatus.OK);
     }
 
     @DeleteMapping("/{book-id}")

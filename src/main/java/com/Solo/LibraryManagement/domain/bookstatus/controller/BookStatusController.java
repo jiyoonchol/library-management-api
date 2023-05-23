@@ -6,6 +6,8 @@ import com.Solo.LibraryManagement.domain.bookstatus.dto.BookStatusResponseDto;
 import com.Solo.LibraryManagement.domain.bookstatus.entity.BookStatus;
 import com.Solo.LibraryManagement.domain.bookstatus.mapper.BookStatusMapper;
 import com.Solo.LibraryManagement.domain.bookstatus.service.BookStatusService;
+import com.Solo.LibraryManagement.global.response.PageResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class BookStatusController {
     }
 
     @PostMapping
-    private ResponseEntity postBookStatus(@RequestBody BookStatusPostDto bookStatusPostDto) {
+    public ResponseEntity postBookStatus(@RequestBody BookStatusPostDto bookStatusPostDto) {
 
         BookStatus bookStatus = bookStatusMapper.bookStatusPostDtoToBookStatus(bookStatusPostDto);
 
@@ -36,7 +38,7 @@ public class BookStatusController {
     }
 
     @PatchMapping("/{bookStatus-id}")
-    private ResponseEntity patchBookStatus(@PathVariable("bookStatus-id") @Positive long bookStatusId,
+    public ResponseEntity patchBookStatus(@PathVariable("bookStatus-id") @Positive long bookStatusId,
                                            @RequestBody BookStatusPatchDto bookStatusPatchDto) {
         bookStatusPatchDto.setBookStatusId(bookStatusId);
 
@@ -46,26 +48,25 @@ public class BookStatusController {
     }
 
     @GetMapping("/{bookStatus-id}")
-    private ResponseEntity getBookStatus(@PathVariable("bookStatus-id") @Positive long bookStatusId) {
+    public ResponseEntity getBookStatus(@PathVariable("bookStatus-id") @Positive long bookStatusId) {
 
         BookStatus response = bookStatusService.findBookStatus(bookStatusId);
         return new ResponseEntity<>(bookStatusMapper.bookStatusToBookStatusResponseDto(response), HttpStatus.OK);
     }
 
     @GetMapping
-    private ResponseEntity getBookListStatus() {
-       List<BookStatus> bookListStatus = bookStatusService.findBookListStatus();
+    public ResponseEntity getBookListStatus(@Positive @RequestParam int page,
+                                             @Positive @RequestParam int size) {
+        Page<BookStatus> pageBookStatuses = bookStatusService.findBookListStatus(page - 1, size);
+        List<BookStatus> bookStatuses = pageBookStatuses.getContent();
 
-        List<BookStatusResponseDto> response =
-                bookListStatus.stream()
-                        .map(bookStatus -> bookStatusMapper.bookStatusToBookStatusResponseDto(bookStatus))
-                        .collect(Collectors.toList());
+        return new ResponseEntity<>(
+                new PageResponseDto<>(bookStatusMapper.bookStatusToBookStatusResponseDtos(bookStatuses), pageBookStatuses), HttpStatus.OK);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookStatus-id}")
-    private ResponseEntity deleteBookStatus(@PathVariable("bookStatus-id") @Positive long bookStatusId) {
+    public ResponseEntity deleteBookStatus(@PathVariable("bookStatus-id") @Positive long bookStatusId) {
         System.out.println("# delete bookStatus");
 
         bookStatusService.deleteBookStatus(bookStatusId);

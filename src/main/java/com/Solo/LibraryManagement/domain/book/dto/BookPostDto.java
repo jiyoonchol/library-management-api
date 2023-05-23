@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookPostDto {
-    private String bookName;
+    private String title;
     private String author;
     private String publisher;
 

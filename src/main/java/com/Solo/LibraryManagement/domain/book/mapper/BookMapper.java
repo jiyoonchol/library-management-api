@@ -7,6 +7,8 @@ import com.Solo.LibraryManagement.domain.book.dto.BookResponseDto;
 import com.Solo.LibraryManagement.domain.book.entity.Book;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface BookMapper {
     Book bookPostDtoToBook(BookPostDto bookPostDto);
@@ -14,4 +16,6 @@ public interface BookMapper {
     Book bookPatchDtoToBook(BookPatchDto bookPatchDto);
 
     BookResponseDto bookToBookResponseDto(Book book);
+
+    List<BookResponseDto> booksToBookResponseDtos(List<Book> books);
 }

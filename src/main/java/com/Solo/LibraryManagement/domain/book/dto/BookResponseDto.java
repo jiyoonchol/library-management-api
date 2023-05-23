@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class BookResponseDto {
     private Long bookId;
-    private String bookName;
+    private String title;
     private String author;
     private String publisher;
 
