@@ -1,37 +1,75 @@
 package com.Solo.LibraryManagement.domain.member.service;
 
 import com.Solo.LibraryManagement.domain.member.entity.Member;
+import com.Solo.LibraryManagement.domain.member.repository.MemberRepository;
+import com.Solo.LibraryManagement.global.exception.BusinessLogicException;
+import com.Solo.LibraryManagement.global.exception.ExceptionCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemberService {
+
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     public Member createMember(Member member) {
-        Member createdMember = member;
-        return createdMember;
+
+        verifyExitsEmail(member.getEmail());
+
+        return memberRepository.save(member);
     }
 
     public Member updateMember(Member member) {
-        Member updatedMember = member;
-        return updatedMember;
+        Member findMember = findVerifiedMember(member.getMemberId());
+
+        Optional.ofNullable(member.getName())
+                .ifPresent(name -> findMember.setName(name));
+        Optional.ofNullable(member.getAddress())
+                .ifPresent(address  -> findMember.setAddress(address));
+        Optional.ofNullable(member.getPhoneNumber())
+                .ifPresent(phoneNumber -> findMember.setPhoneNumber(phoneNumber));
+        Optional.ofNullable(member.getMemberStatus())
+                .ifPresent(memberStatus -> findMember.setMemberStatus(memberStatus));
+
+        return memberRepository.save(findMember);
+
     }
 
     public Member findMember(long memberId) {
-
-        Member member = new Member(memberId, "mark", "010-1234-5678", "address");
-        return member;
+        return findVerifiedMember(memberId);
     }
 
-    public List<Member> findMembers() {
-        List<Member> members = List.of(
-                new Member(1L, "mark", "010-1234-5678", "address"),
-                new Member(2L, "zeno", "010-5678-1234", "address2"));
-
-        return members;
+    public Page<Member> findMembers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return memberRepository.findAllByOrderByMemberIdDesc(pageRequest);
     }
 
     public void deleteMember(long memberId) {
+        Member findMember = findVerifiedMember(memberId);
 
+        memberRepository.delete(findMember);
+    }
+
+    public Member findVerifiedMember(long memberId) {
+        Optional<Member> optionalMember =
+                memberRepository.findById(memberId);
+        Member findMember =
+                optionalMember.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
+    }
+
+    public void verifyExitsEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isPresent())
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
 }

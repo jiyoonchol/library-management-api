@@ -1,5 +1,6 @@
 package com.Solo.LibraryManagement.domain.member.dto;
 
+import com.Solo.LibraryManagement.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,7 +8,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberResponseDto {
     private long memberId;
-    private String memberName;
+    private String email;
+    private String name;
     private String phoneNumber;
-    private String memberAddress;
+    private String address;
+    private Member.MemberStatus memberStatus;
+
+    public String getMemberStatus() {
+        return memberStatus.getStatus();
+    }
 }

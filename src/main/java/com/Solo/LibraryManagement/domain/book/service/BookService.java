@@ -1,15 +1,21 @@
 package com.Solo.LibraryManagement.domain.book.service;
 
 import com.Solo.LibraryManagement.domain.book.entity.Book;
+import com.Solo.LibraryManagement.domain.book.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class BookService {
+    private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
     public Book createBook(Book book) {
-        Book createdBook = book;
-        return createdBook;
+        return bookRepository.save(book);
     }
 
     public Book updateBook(Book book) {

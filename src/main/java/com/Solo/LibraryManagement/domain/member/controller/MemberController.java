@@ -6,6 +6,8 @@ import com.Solo.LibraryManagement.domain.member.dto.MemberPatchDto;
 import com.Solo.LibraryManagement.domain.member.dto.MemberPostDto;
 import com.Solo.LibraryManagement.domain.member.entity.Member;
 import com.Solo.LibraryManagement.domain.member.service.MemberService;
+import com.Solo.LibraryManagement.global.response.PageResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,15 +59,15 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity getMembers() {
+    public ResponseEntity getMembers(@Positive @RequestParam int page,
+                                     @Positive @RequestParam int size) {
 
 
-        List<Member> members = memberService.findMembers();
-        List<MemberResponseDto> response =
-                members.stream()
-                        .map(member -> memberMapper.memberToMemberResponseDto(member))
-                        .collect(Collectors.toList());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Page<Member> pageMembers = memberService.findMembers(page -1, size);
+        List<Member> members = pageMembers.getContent();
+
+        return new ResponseEntity<>(
+                new PageResponseDto<>(memberMapper.membersToMemberResponseDtos(members), pageMembers), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
