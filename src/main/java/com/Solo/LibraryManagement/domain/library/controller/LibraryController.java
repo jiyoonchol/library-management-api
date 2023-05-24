@@ -6,6 +6,8 @@ import com.Solo.LibraryManagement.domain.library.dto.LibraryResponseDto;
 import com.Solo.LibraryManagement.domain.library.entity.Library;
 import com.Solo.LibraryManagement.domain.library.mapper.LibraryMapper;
 import com.Solo.LibraryManagement.domain.library.service.LibraryService;
+import com.Solo.LibraryManagement.global.response.PageResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +39,7 @@ public class LibraryController {
     }
 
     @PatchMapping("/{library-id}")
-    public ResponseEntity patchLibrary(@PathVariable("/library-id") @Positive long libraryId,
+    public ResponseEntity patchLibrary(@PathVariable("library-id") @Positive long libraryId,
                                        @RequestBody LibraryPatchDto libraryPatchDto) {
         libraryPatchDto.setLibraryId(libraryId);
 
@@ -56,14 +58,15 @@ public class LibraryController {
     }
 
     @GetMapping
-    public ResponseEntity getLibraries() {
+    public ResponseEntity getLibraries(@Positive @RequestParam int page,
+                                       @Positive @RequestParam int size) {
 
-        List<Library> libraries = libraryService.findLibraries();
-        List<LibraryResponseDto> response =
-                libraries.stream()
-                        .map(library -> libraryMapper.libraryToLibraryResponseDto(library))
-                        .collect(Collectors.toList());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Page<Library> pageLibraries = libraryService.findLibraries(page - 1, size);
+        List<Library> libraries = pageLibraries.getContent();
+
+        return new ResponseEntity<>(
+                new PageResponseDto<>(libraryMapper.librariesToLibraryResponseDtos(libraries), pageLibraries), HttpStatus.OK);
+
     }
 
     @DeleteMapping("/{library-id}")

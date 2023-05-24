@@ -6,9 +6,12 @@ import com.Solo.LibraryManagement.domain.library.entity.Library;
 import com.Solo.LibraryManagement.domain.library.dto.LibraryPostDto;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface LibraryMapper {
     Library libraryToLibraryPostDto(LibraryPostDto libraryPostDto);
     Library libraryToLibraryPatchDto(LibraryPatchDto libraryPatchDto);
     LibraryResponseDto libraryToLibraryResponseDto(Library library);
+    List<LibraryResponseDto> librariesToLibraryResponseDtos(List<Library> libraries);
 }

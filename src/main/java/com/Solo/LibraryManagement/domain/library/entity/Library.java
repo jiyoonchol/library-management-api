@@ -24,10 +24,10 @@ public class Library extends BaseTime {
     private Long libraryId;
 
     @Column(name = "LIBRARY_NAME")
-    private String libraryName;
+    private String name;
 
     @Column
-    private String libraryAddress;
+    private String address;
 
     @OneToMany(mappedBy = "library")
     private List<MemberShip> memberShips = new ArrayList<>();
@@ -35,9 +35,9 @@ public class Library extends BaseTime {
     @OneToMany(mappedBy = "library")
     private List<Book> books = new ArrayList<>();
 
-    public Library(Long libraryId, String libraryName, String libraryAddress) {
+    public Library(Long libraryId, String name, String address) {
         this.libraryId = libraryId;
-        this.libraryName = libraryName;
-        this.libraryAddress = libraryAddress;
+        this.name = name;
+        this.address = address;
     }
 }

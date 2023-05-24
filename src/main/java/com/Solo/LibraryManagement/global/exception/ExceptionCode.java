@@ -7,7 +7,10 @@ public enum ExceptionCode {
     MEMBER_EXISTS(405, "Member Exists"),
 
     BOOK_NOT_FOUND(404, "Book Not Found"),
-    BOOK_STATUS_NOT_FOUND(404, "Book Status Not Found");
+    BOOK_STATUS_NOT_FOUND(404, "Book Status Not Found"),
+    LIBRARY_NOT_FOUND(404, "Library Not Found"),
+    LIBRARY_EXISTS(405, "Library Exists");
+
 
 
     @Getter
