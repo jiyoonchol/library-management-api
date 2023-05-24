@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class LibraryPatchDto {
     private long libraryId;
-    private String libraryName;
-    private String libraryAddress;
+    private String name;
+    private String address;
 }

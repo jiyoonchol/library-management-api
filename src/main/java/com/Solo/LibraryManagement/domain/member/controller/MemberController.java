@@ -1,6 +1,5 @@
 package com.Solo.LibraryManagement.domain.member.controller;
 
-import com.Solo.LibraryManagement.domain.member.dto.MemberResponseDto;
 import com.Solo.LibraryManagement.domain.member.mapper.MemberMapper;
 import com.Solo.LibraryManagement.domain.member.dto.MemberPatchDto;
 import com.Solo.LibraryManagement.domain.member.dto.MemberPostDto;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mc/member")

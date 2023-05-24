@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LibraryResponseDto {
     private long libraryId;
-    private String libraryName;
-    private String libraryAddress;
+    private String name;
+    private String address;
 }
