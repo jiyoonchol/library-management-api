@@ -6,6 +6,7 @@ import com.Solo.LibraryManagement.global.exception.BusinessLogicException;
 import com.Solo.LibraryManagement.global.exception.ExceptionCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +52,11 @@ public class BookService {
     public void deleteBook(long bookId) {
         Book findBook = findVerifiedBook(bookId);
         bookRepository.delete(findBook);
+    }
+
+    public List<Book> bookSearch(String title, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return bookRepository.findByTitleContaining(title, pageable);
+//        List<Book> searchBook = bookRepository.findByTitleContaining(keyword, pageable);
     }
 }

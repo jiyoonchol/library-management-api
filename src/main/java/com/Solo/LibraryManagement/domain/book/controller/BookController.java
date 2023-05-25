@@ -3,6 +3,7 @@ package com.Solo.LibraryManagement.domain.book.controller;
 import com.Solo.LibraryManagement.domain.book.dto.BookPatchDto;
 import com.Solo.LibraryManagement.domain.book.dto.BookPostDto;
 import com.Solo.LibraryManagement.domain.book.dto.BookResponseDto;
+import com.Solo.LibraryManagement.domain.book.dto.BookSearchDto;
 import com.Solo.LibraryManagement.domain.book.entity.Book;
 import com.Solo.LibraryManagement.domain.book.mapper.BookMapper;
 import com.Solo.LibraryManagement.domain.book.service.BookService;
@@ -70,5 +71,15 @@ public class BookController {
         bookService.deleteBook(bookId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
+    @PostMapping("/search")
+    public ResponseEntity<List<BookResponseDto>> searchBook(@RequestBody BookSearchDto bookSearchDto,
+                                                            @Positive @RequestParam int page,
+                                                            @Positive @RequestParam int size) {
+        List<Book> searchResults = bookService.bookSearch(bookSearchDto.getSearch(), page, size);
+        List<BookResponseDto> responseDtoList = bookMapper.booksToBookResponseDtos(searchResults);
+        return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
     }
 }
