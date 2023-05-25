@@ -21,6 +21,7 @@ public class Library extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "LIBRARY_ID")
     private Long libraryId;
 
     @Column(name = "LIBRARY_NAME")

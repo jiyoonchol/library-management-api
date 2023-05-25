@@ -18,11 +18,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "BOOKS")
 public class Book extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "BOOK_ID")
     private Long bookId;  // PK 도서 식별번호
 
     @Column(name = "BOOK_NAME", nullable = false)
@@ -39,7 +40,7 @@ public class Book extends BaseTime {
     private List<BookStatus> bookStatuses = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "library_id")
+    @JoinColumn(name = "LIBRARY_ID")
     private Library library;
 
     public Book(Long bookId, String title, String author, String publisher) {
