@@ -24,8 +24,8 @@ dependencies {
 	// OAuth2
 //	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	// Spring Security(SECURITY)
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
 	// Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// Validation(I/O)
@@ -57,6 +57,7 @@ dependencies {
 	// Spring Data JDBC
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	runtimeOnly 'com.h2database:h2'
+
 
 
 }
