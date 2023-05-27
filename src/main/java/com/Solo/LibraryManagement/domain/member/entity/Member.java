@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Member extends BaseTime {
@@ -25,12 +26,17 @@ public class Member extends BaseTime {
 
     @Column(nullable = false, updatable = false, unique = true)
     private String email;
+    @Column(length = 100, nullable = false)
+    private String password;
     @Column
     private String name;
     @Column
     private String phoneNumber;
     @Column
     private String address;
+
+    @ElementCollection(fetch = FetchType.EAGER)       // 사용자 권한 등록을 위한 권한 테이블
+    private List<String> roles = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
